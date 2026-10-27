@@ -9,12 +9,27 @@ import { AppError } from "../utils/lib.js";
 function configureApp(app) {
   const origins = (process.env.CLIENT_ORIGIN || "http://127.0.0.1:5173")
     .split(",")
-    .map((origin) => origin.trim())
+    .map((origin) => {
+      let o = origin.trim().replace(/\/+$/, "");
+      if (o && !/^https?:\/\//i.test(o)) {
+        o = `https://${o}`;
+      }
+      return o.toLowerCase();
+    })
     .filter(Boolean);
   app.disable("x-powered-by");
-  if (process.env.TRUST_PROXY === "1") app.set("trust proxy", 1);
+
+  const trustProxy = process.env.TRUST_PROXY;
+  if (
+    trustProxy === "1" ||
+    (trustProxy !== "0" && process.env.NODE_ENV === "production")
+  ) {
+    app.set("trust proxy", 1);
+  }
+
   app.use(
     helmet({
+      crossOriginResourcePolicy: { policy: "cross-origin" },
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
@@ -35,7 +50,14 @@ function configureApp(app) {
   );
   app.use(
     cors({
-      origin: origins,
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        const normalized = origin.trim().replace(/\/+$/, "").toLowerCase();
+        if (origins.includes(normalized)) {
+          return callback(null, true);
+        }
+        return callback(null, false);
+      },
       credentials: true,
     }),
   );
@@ -52,7 +74,13 @@ function configureApp(app) {
   app.use("/api", (req, _res, next) => {
     if (!["GET", "HEAD", "OPTIONS"].includes(req.method)) {
       const origin = req.get("origin");
-      if ((origin && !origins.includes(origin)) || req.get("x-medibridge") !== "1")
+      const normalized = origin
+        ? origin.trim().replace(/\/+$/, "").toLowerCase()
+        : null;
+      if (
+        (normalized && !origins.includes(normalized)) ||
+        req.get("x-medibridge") !== "1"
+      )
         return next(
           new AppError(
             403,
