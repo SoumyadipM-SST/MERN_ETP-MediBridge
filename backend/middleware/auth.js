@@ -4,13 +4,22 @@ import { Session } from "../models/index.js";
 import { ensure } from "../utils/lib.js";
 
 const digest = (token) => createHash("sha256").update(token).digest("hex");
-export const cookieOptions = () => ({
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
-  path: "/",
-  maxAge: 7 * 24 * 3600 * 1000,
-});
+export const cookieOptions = () => {
+  const isProd = process.env.NODE_ENV === "production";
+  const secure =
+    process.env.COOKIE_SECURE !== undefined
+      ? process.env.COOKIE_SECURE === "true" || process.env.COOKIE_SECURE === "1"
+      : isProd;
+  const sameSite =
+    process.env.COOKIE_SAME_SITE || (secure || isProd ? "none" : "lax");
+  return {
+    httpOnly: true,
+    secure,
+    sameSite,
+    path: "/",
+    maxAge: 7 * 24 * 3600 * 1000,
+  };
+};
 export async function loginSession(res, user) {
   const token = randomBytes(32).toString("hex");
   await Session.create({
@@ -22,7 +31,7 @@ export async function loginSession(res, user) {
 }
 export async function authenticate(req, _res, next) {
   try {
-    const token = req.cookies.medibridge;
+    const token = req.cookies?.medibridge;
     ensure(token, 401, "Please sign in to continue.");
     const session = await Session.findOne({
       tokenHash: digest(token),
