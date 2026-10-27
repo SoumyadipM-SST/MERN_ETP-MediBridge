@@ -1,201 +1,350 @@
-# MediBridge
+# MediBridge — Full-Stack Healthcare Platform
 
-MediBridge is a full-stack MERN (MongoDB, Express, React, Node.js) healthcare platform engineered to connect patients, doctors, and pharmacies. The application features multi-role authentication, specialist appointment booking, browser-based telehealth consultations via Jitsi Meet, digital and scanned prescription workflows, multi-batch pharmacy inventory with expiry safeguards, and Razorpay test-mode payment processing.
+MediBridge is a modern healthcare web platform designed to bring **Patients**, **Doctors**, and **Pharmacies** together into one seamless digital care journey.
 
-Demo Video - https://drive.google.com/drive/folders/1o4NAnWiAx5_VFwfowQMyq1CAp423WQTS?usp=drive_link
+Instead of juggling different tools, patients can easily find doctors, book appointments, join private in-browser video calls, receive digital prescriptions, and order their prescribed medicines online. Doctors get a dedicated clinical dashboard to conduct consultations and issue official printable prescriptions, while pharmacies manage multi-batch medicine stocks with built-in safeguards that automatically block expired medicines from ever reaching patients.
+
+**Live Demo Video:** [Watch Demonstration on Google Drive](https://drive.google.com/drive/folders/1o4NAnWiAx5_VFwfowQMyq1CAp423WQTS?usp=drive_link)
 
 ---
 
 ## Table of Contents
 
-- [Key Features](#key-features)
-- [Technology Stack](#technology-stack)
-- [Project Architecture](#project-architecture)
 - [Prerequisites](#prerequisites)
+- [Technology Stack](#technology-stack)
 - [Environment Configuration](#environment-configuration)
+- [Project Architecture](#project-architecture)
+- [Core Features & How They Work](#core-features--how-they-work)
+  - [1. Multi-Role Portals & Smart Authentication](#1-multi-role-portals--smart-authentication)
+  - [2. Doctor Directory & Appointment Booking](#2-doctor-directory--appointment-booking)
+  - [3. In-Browser Telehealth Video Consultations](#3-in-browser-telehealth-video-consultations)
+  - [4. Digital Prescriptions & Printable Clinic Letterhead](#4-digital-prescriptions--printable-clinic-letterhead)
+  - [5. Multi-Batch Pharmacy Inventory & Expiry Safeguards](#5-multi-batch-pharmacy-inventory--expiry-safeguards)
+  - [6. Medicine Catalog & Smart Image Uploads](#6-medicine-catalog--smart-image-uploads)
+  - [7. Shopping Cart & Razorpay Test Payments](#7-shopping-cart--razorpay-test-payments)
+  - [8. Tripartite Medical History & Consultation Records](#8-tripartite-medical-history--consultation-records)
 - [Installation and Setup](#installation-and-setup)
-- [Database Seeding](#database-seeding)
+- [Database Seeding & Demo Accounts](#database-seeding--demo-accounts)
 - [Running the Application](#running-the-application)
-- [Authentication and Role-Based Access](#authentication-and-role-based-access)
-- [Pharmacy, Inventory Batches, and Expiry Safeguards](#pharmacy-inventory-batches-and-expiry-safeguards)
-- [Razorpay Test-Mode Payment Workflow](#razorpay-test-mode-payment-workflow)
-- [Telehealth Consultations and Jitsi Meet](#telehealth-consultations-and-jitsi-meet)
 - [Available npm Scripts](#available-npm-scripts)
 - [Troubleshooting Common Issues](#troubleshooting-common-issues)
-- [Security and Compliance Notes](#security-and-compliance-notes)
-
----
-
-## Key Features
-
-- **Multi-Role Portals**: Distinct experiences and access permissions for **Patients**, **Doctors**, and **Pharmacists** with strict backend authorization.
-- **Doctor Directory & Scheduling**: Filter specialists by specialty, consult fees, and availability. Book scheduled date/time slots with transactional concurrency locks to prevent double-booking.
-- **Browser-Based Telehealth (Jitsi Meet)**: End-to-end encrypted video consultation using the official Jitsi IFrame API (`meet.jit.si`) with live in-session chat, participant presence, and clinical memo recording.
-- **Digital & Printable Prescriptions**: Doctors can author formal Latin $℞$ prescriptions with drug dosages, timings, and dietary advice. Includes an official printable clinic letterhead (`@media print` optimized) and patient scan upload capabilities.
-- **Multi-Batch Pharmacy Inventory**: Pharmacists can manage medicines across multiple inventory batches with individual lot labels, stock quantities, and ISO calendar expiry dates (`YYYY-MM-DD`).
-- **Automated Expiry Safeguards**:
-  - Real-time stock evaluation under Indian Standard Time (`UTC+05:30`).
-  - Strict FIFO (First-In, First-Out) stock allocation favoring nearest-expiry valid items.
-  - Automatic blocking of expired or unrecorded stock from cart addition and order checkout.
-  - Fulfillment lock ensuring pharmacists cannot pack or ship batches that have expired after order placement.
-- **Medicine Image Uploads**: Product creation supports custom product image uploads (with live client-side canvas compression) and fallback category artwork.
-- **Razorpay Test-Mode Payments**: Server-side checkout creation, cryptographic HMAC-SHA256 signature verification (`timingSafeEqual`), automatic test refunds for unfulfillable items, and idempotent payment reconciliation.
-- **Medical History Dashboard**: Patients view past consultations organized in tripartite clinical cards (Clinical Notes, Medical Prescription, and Linked Medicine Orders).
-
----
-
-## Technology Stack
-
-### Backend
-
-- **Runtime**: Node.js (`>=22.12.0 <25`)
-- **Framework**: Express 5
-- **Database**: MongoDB Atlas via Mongoose 8
-- **Validation**: Zod 4
-- **Security & Utilities**:
-  - `bcryptjs` (password hashing with 12 salt rounds)
-  - `cookie-parser` (HttpOnly session cookies)
-  - `helmet` (HTTP security headers)
-  - `cors` (credentialed origin allowlisting)
-  - `express-rate-limit` (request throttling)
-  - `multer` (multipart/form-data for medical file uploads)
-  - Native `crypto` (HMAC-SHA256 signatures, random bytes, timing-safe equality)
-
-### Frontend
-
-- **Framework**: React 19
-- **Build Tool**: Vite 7
-- **Routing**: React Router 7
-- **State & Server Cache**: TanStack Query 5
-- **Form Handling**: React Hook Form 7 with `@hookform/resolvers/zod`
-- **Icons**: Lucide React
-- **Styling**: Tailwind CSS 4 with custom CSS design tokens (`Outfit` display font and `Plus Jakarta Sans` body typography)
-
-### External Integrations
-
-- **Video Conferencing**: Jitsi Meet External API (`https://meet.jit.si/external_api.js`)
-- **Payment Gateway**: Razorpay Test Mode API (`https://api.razorpay.com/v1`)
-
----
-
-## Project Architecture
-
-MediBridge is structured as an npm workspaces monorepo:
-
-```text
-medibridge/
-├── backend/
-│   ├── config/              # Database (Mongoose) and HTTP server setup
-│   ├── controllers/         # Request handlers (auth, appointments, catalog, orders, etc.)
-│   ├── middleware/          # Authentication, role verification, and upload handlers
-│   ├── models/              # Mongoose schemas (User, Doctor, Medicine, Appointment, etc.)
-│   ├── routes/              # Express API route registrations
-│   ├── services/            # Core business logic (stock, inventory, payments, video)
-│   ├── utils/               # HTTP helpers, validation schemas, and error wrappers
-│   ├── .env.example         # Environment template with safe placeholders
-│   ├── app.js               # Express application initialization and middleware
-│   ├── package.json         # Backend manifest and dependencies
-│   ├── seed.js              # Database seed script for test accounts & catalog
-│   └── server.js            # HTTP server entry point with video maintenance worker
-├── frontend/
-│   ├── public/              # Static assets, category SVG illustrations, and icons
-│   ├── src/
-│   │   ├── components/      # Shared UI primitives, doctor cards, product cards
-│   │   ├── features/        # Feature modules:
-│   │   │   ├── appointments/  # Doctor schedules, booking modal, appointment records
-│   │   │   ├── commerce/      # Cart, checkout, order details, prescriptions
-│   │   │   ├── consultation/  # Jitsi video stage, chat conversation, notes editor
-│   │   │   └── pharmacy/      # Inventory table, batch editor, product create form
-│   │   ├── hooks/           # Custom React hooks (useApp, useData, useNow)
-│   │   ├── layouts/         # Site layout, navigation bar, and footer
-│   │   ├── pages/           # Route views (Home, Doctors, Catalog, Consultations, History)
-│   │   ├── services/        # Client API, Jitsi loader, Razorpay modal handler
-│   │   ├── styles/          # Custom CSS stylesheets (tokens, components, records, layout)
-│   │   ├── utils/           # Formatters and form validation schemas
-│   │   ├── App.jsx          # Route definitions and application shell
-│   │   └── main.jsx         # React application entry point
-│   ├── package.json         # Frontend manifest and dependencies
-│   └── vite.config.js       # Vite build and proxy configuration
-├── .prettierrc.json         # Code style configuration
-├── eslint.config.js         # ESLint configuration
-├── package.json             # Root monorepo manifest and orchestration scripts
-└── README.md                # Project documentation
-```
+- [Security & Academic Notice](#security--academic-notice)
 
 ---
 
 ## Prerequisites
 
-Before setting up MediBridge, ensure your workstation meets the following requirements:
+Before running MediBridge locally, make sure you have the following installed and ready:
 
 1. **Node.js**: Version `22.12.0` or newer (Node 22 LTS or Node 24).  
-   Check your version with:
+   Check your installed version:
    ```bash
    node -v
    ```
-2. **MongoDB Atlas Account**: A free MongoDB Atlas M0 cluster or a local MongoDB server (`>= 6.0`).
-3. **Razorpay Account (Optional for Payments)**: A free Razorpay account in **Test Mode** to obtain test API keys (`rzp_test_...`).
-4. **Git**: Installed and configured on your machine.
+2. **MongoDB**: A free cloud database cluster from [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (M0 cluster) or a local MongoDB server (`>= 6.0`).
+3. **Razorpay Account (Optional for Payments)**: A free [Razorpay](https://razorpay.com/) account in **Test Mode** to obtain simulated payment keys (`rzp_test_...`).
+4. **Git**: Installed on your system to clone and manage the repository.
+
+---
+
+## Technology Stack
+
+MediBridge is built with the **MERN** stack (MongoDB, Express, React, Node.js) organized in an npm workspaces monorepo:
+
+### Frontend (Client-Side)
+
+- **React 19**: Modern UI library using functional components and hooks.
+- **Vite 7**: Blazing fast development server and production bundler.
+- **React Router 7**: Declarative client-side routing with role-based route guards.
+- **TanStack Query 5 (React Query)**: Smart server cache management, background data refetching, and zero-stutter screen transitions.
+- **React Hook Form 7 & Zod 4**: Smooth, reactive form handling with instant validation.
+- **Lucide React**: Clean, modern iconography across all portals.
+- **Tailwind CSS 4 & Custom Design Tokens**: Contemporary design system featuring glassmorphism, responsive cards, and clean typography (`Outfit` and `Plus Jakarta Sans`).
+
+### Backend (Server-Side)
+
+- **Node.js (`>=22.12.0`) & Express 5**: Fast and robust REST API server.
+- **MongoDB Atlas & Mongoose 8**: Scalable NoSQL document database with strict schema models and transaction support.
+- **Bcrypt.js**: Cryptographic password hashing (12 salt rounds) for user credentials.
+- **Cookie-Parser**: Secure session token handling via `HttpOnly` cookies.
+- **Helmet & CORS**: Comprehensive HTTP security headers and cross-origin protection.
+- **Express-Rate-Limit**: Request throttling to prevent brute-force attacks.
+- **Multer**: Multipart form-data handling for patient prescription scans.
+- **Native Node Crypto**: HMAC-SHA256 signature verification and cryptographically random session tokens.
+
+### External Services
+
+- **Jitsi Meet**: In-browser video conferencing powered by the Jitsi IFrame API (`meet.jit.si`).
+- **Razorpay (Test Mode)**: Secure online payment gateway simulation for medicine orders.
 
 ---
 
 ## Environment Configuration
 
-Environment variables reside in `backend/.env`. A template is provided in `backend/.env.example`.
+All backend environment settings are configured in `backend/.env`. A template is provided in `backend/.env.example`.
 
-### Step 1: Copy the Template
+### Step 1: Create the Environment File
 
-On Windows (PowerShell):
+From the root of the project:
 
-```powershell
-Copy-Item backend/.env.example backend/.env
-```
+- **Windows (PowerShell):**
+  ```powershell
+  Copy-Item backend/.env.example backend/.env
+  ```
+- **macOS / Linux (Bash):**
+  ```bash
+  cp backend/.env.example backend/.env
+  ```
 
-On macOS / Linux (Bash):
+### Step 2: Configure Environment Variables
 
-```bash
-cp backend/.env.example backend/.env
-```
+Open `backend/.env` in your code editor and enter your values:
+
+| Variable              | What It Does                                                      | Recommended / Example Value                                            |
+| :-------------------- | :---------------------------------------------------------------- | :--------------------------------------------------------------------- |
+| `PORT`                | Local port for the Express backend                                | `4000`                                                                 |
+| `MONGODB_URI`         | MongoDB Atlas SRV connection string or local MongoDB URI          | `mongodb+srv://<user>:<password>@cluster0.xxxx.mongodb.net/medibridge` |
+| `CLIENT_ORIGIN`       | Allowed frontend URL(s) for CORS and credentials                  | `http://127.0.0.1:5173,http://localhost:5173`                          |
+| `NODE_ENV`            | Application environment (`development` or `production`)           | `development`                                                          |
+| `TRUST_PROXY`         | Express reverse proxy trust (`0` for local, `1` for Render/cloud) | `0`                                                                    |
+| `RAZORPAY_KEY_ID`     | Razorpay Test Key ID (starts with `rzp_test_`)                    | `rzp_test_YourTestKeyId`                                               |
+| `RAZORPAY_KEY_SECRET` | Razorpay Test Key Secret                                          | `YourRazorpaySecretKey`                                                |
+| `SEED_PASSWORD`       | Default password for seeded demo accounts                         | `DemoPassword2026!`                                                    |
 
 > [!CAUTION]
-> Never commit your real `backend/.env` file to version control. The `.gitignore` file already excludes `.env`.
+> Never commit your real `.env` file to GitHub or share your database password. The `.gitignore` file automatically excludes `backend/.env`.
 
-### Step 2: Configure Variables
+---
 
-Open `backend/.env` in your text editor and fill in the values:
+## Project Architecture
 
-| Variable              | Description                                                           | Example / Recommended Value                                            |
-| :-------------------- | :-------------------------------------------------------------------- | :--------------------------------------------------------------------- |
-| `PORT`                | Local port for the Express backend server                             | `4000`                                                                 |
-| `MONGODB_URI`         | MongoDB connection URI (Atlas SRV or local connection)                | `mongodb+srv://USERNAME:PASSWORD@cluster0.xxxx.mongodb.net/medibridge` |
-| `CLIENT_ORIGIN`       | Comma-separated list of allowed frontend origins for CORS and cookies | `http://127.0.0.1:5173,http://localhost:5173`                          |
-| `NODE_ENV`            | Application runtime environment                                       | `development`                                                          |
-| `TRUST_PROXY`         | Express trust proxy setting (`0` for local development)               | `0`                                                                    |
-| `RAZORPAY_KEY_ID`     | Razorpay Test Mode Key ID (must start with `rzp_test_`)               | `rzp_test_YourTestKeyId`                                               |
-| `RAZORPAY_KEY_SECRET` | Razorpay Test Mode Key Secret                                         | `YourRazorpaySecretKey`                                                |
-| `SEED_PASSWORD`       | Password assigned to demonstration seed accounts (8–72 characters)    | `DemoPassword2026!`                                                    |
+MediBridge uses an **npm workspaces monorepo** where the frontend and backend live in the same repository for seamless management, shared linting, and synchronized builds.
+
+Here is the exact repository directory structure:
+
+```text
+medibridge/
+├── backend/
+│   ├── config/              # Server configuration
+│   │   ├── database.js      # MongoDB Mongoose connection handler
+│   │   └── http.js          # Express app middleware (Helmet, CORS, rate limits)
+│   ├── controllers/         # Request handling logic
+│   │   ├── account.controller.js        # User profile and account updates
+│   │   ├── appointments.controller.js   # Slot booking and scheduling
+│   │   ├── auth.controller.js           # Signup, login, logout, and session check
+│   │   ├── cart.controller.js           # Shopping cart management
+│   │   ├── catalog.controller.js        # Public medicine catalog & search
+│   │   ├── consultation.controller.js   # Telehealth video room & doctor notes
+│   │   ├── doctor.controller.js         # Doctor profiles & availability
+│   │   ├── inventory.controller.js      # Pharmacist inventory & batch management
+│   │   ├── orders.controller.js         # Order placement & fulfillment
+│   │   └── prescriptions.controller.js  # Digital prescriptions & scans
+│   ├── middleware/          # Express route middleware
+│   │   ├── auth.js          # Cookie-based authentication & role verification
+│   │   └── uploads.js       # Multer configuration for file uploads
+│   ├── models/              # Mongoose data schemas
+│   │   ├── index.js         # User, Doctor, Medicine, Order, Prescription schemas
+│   │   └── video.js         # Telehealth video session tracking schema
+│   ├── routes/              # Express API endpoints
+│   │   ├── auth.routes.js         # /api/auth routes
+│   │   ├── catalog.routes.js      # /api/catalog routes
+│   │   ├── clinical.routes.js     # /api/appointments, /consultations, /prescriptions
+│   │   ├── commerce.routes.js     # /api/cart, /orders, /payments
+│   │   └── operations.routes.js   # /api/inventory, /doctor operations
+│   ├── services/            # Core business logic
+│   │   ├── appointments.service.js          # Appointment validation & locking
+│   │   ├── commerce.service.js              # Checkout calculation & cart sync
+│   │   ├── consultation-lifecycle.service.js# Video call lifecycle worker
+│   │   ├── instant-consultation.service.js  # Queue logic for on-demand calls
+│   │   ├── inventory.service.js             # Batch stock management
+│   │   ├── payments.service.js              # Razorpay order & signature checks
+│   │   ├── prescriptions.service.js         # Prescription generation
+│   │   ├── stock.service.js                 # FIFO stock allocation & expiry check
+│   │   └── video.service.js                 # Jitsi room token creation
+│   ├── utils/               # Helper utilities
+│   │   ├── http.js          # Response dispatchers (send, sendError)
+│   │   ├── lib.js           # AppError class, ensure assertion helper
+│   │   └── validation.js    # Shared Zod validation schemas
+│   ├── .env.example         # Template for environment variables
+│   ├── app.js               # Express application setup
+│   ├── package.json         # Backend dependencies & scripts
+│   ├── seed.js              # Database seed script for test accounts & catalog
+│   └── server.js            # Server entry point & video cleanup worker
+├── frontend/
+│   ├── public/              # Static assets & category packaging artwork
+│   │   ├── assets/          # SVG category illustrations (bottles, packs, tubes)
+│   │   ├── mark.svg         # MediBridge platform logo mark
+│   │   └── _redirects       # Netlify SPA routing rules
+│   ├── src/
+│   │   ├── components/      # Shared reusable UI elements
+│   │   │   ├── DoctorCard.jsx   # Doctor profile card with booking trigger
+│   │   │   ├── Expiry.jsx       # Visual expiry date badges & indicators
+│   │   │   ├── products.jsx     # Medicine catalog cards & details
+│   │   │   └── ui.jsx           # Buttons, inputs, modals, alerts, badges
+│   │   ├── features/        # Major feature workspaces
+│   │   │   ├── appointments/    # Doctor schedules & appointment booking modal
+│   │   │   ├── commerce/        # Cart drawer, checkout modal, order views
+│   │   │   ├── consultation/    # Jitsi video call window, chat, & clinical notes
+│   │   │   └── pharmacy/        # Pharmacy inventory table & batch management
+│   │   ├── hooks/           # Custom React hooks
+│   │   │   ├── useApp.js        # Global app context (auth state, active role)
+│   │   │   ├── useData.js       # TanStack Query data fetching wrapper
+│   │   │   └── useNow.js        # Reactive live clock for session timing
+│   │   ├── layouts/
+│   │   │   └── SiteLayout.jsx   # Global navbar, navigation links, and footer
+│   │   ├── pages/           # Application views
+│   │   │   ├── Auth.jsx         # Login and registration dialogs
+│   │   │   ├── Catalog.jsx      # Medicine store with search & category filters
+│   │   │   ├── Consultation.jsx # Active video consultation room
+│   │   │   ├── Consultations.jsx# Doctor/patient appointments list
+│   │   │   ├── Doctors.jsx      # Doctor directory & specialist filters
+│   │   │   ├── History.jsx      # Patient medical history & consultation cards
+│   │   │   ├── Home.jsx         # Landing page with hero, stats, and features
+│   │   │   └── Profile.jsx      # User profile details
+│   │   ├── services/        # Client-side API & integration connectors
+│   │   │   ├── api.js           # Fetch API client with credentials & error handling
+│   │   │   ├── jitsi.js         # Jitsi Meet external script loader
+│   │   │   └── razorpay.js      # Razorpay checkout script & modal launcher
+│   │   ├── styles/          # Modular CSS stylesheets
+│   │   │   ├── tokens.css       # Design variables (colors, radii, shadows)
+│   │   │   ├── base.css         # Typography, resets, and layout basics
+│   │   │   ├── layout.css       # App navigation, headers, and container grids
+│   │   │   ├── components.css   # Buttons, cards, modals, and badge styles
+│   │   │   ├── dashboard.css    # Staff and patient dashboard grids
+│   │   │   ├── doctors.css      # Specialist directory styles
+│   │   │   ├── commerce.css     # Pharmacy catalog, cart, and checkout styles
+│   │   │   ├── consultation.css # Video call stage and chat styling
+│   │   │   ├── records.css      # Clinical cards, prescriptions, & print styles
+│   │   │   ├── account.css      # Profile and authentication form styles
+│   │   │   ├── refinement.css   # Visual polish and micro-animations
+│   │   │   └── index.css        # Main stylesheet entry point
+│   │   ├── utils/           # Frontend formatting & form helpers
+│   │   │   ├── format.js        # Currency, date, and Indian Standard Time formatters
+│   │   │   └── forms.js         # Zod form resolver helper
+│   │   ├── App.jsx          # Route definitions & authenticated views
+│   │   └── main.jsx         # React application entry point
+│   ├── index.html           # Main HTML document template
+│   ├── package.json         # Frontend dependencies & scripts
+│   └── vite.config.js       # Vite configuration with local API proxy
+├── .prettierrc.json         # Prettier code formatting rules
+├── eslint.config.js         # ESLint JavaScript/React linting configuration
+├── package.json             # Root monorepo orchestration scripts
+└── README.md                # Project documentation
+```
+
+---
+
+## Core Features & How They Work
+
+### 1. Multi-Role Portals & Smart Authentication
+
+- **What It Does**: MediBridge caters to three distinct user types—**Patients**, **Doctors**, and **Pharmacists**. Patients can sign up freely, while staff log into specialized workspaces tailored to their duties.
+- **The Tech Behind It**:
+  - Instead of vulnerable client-side tokens stored in local storage, login issues a secure 32-byte cryptographically random session token stored in an `HttpOnly` cookie.
+  - In cross-site production deployments (such as Netlify frontend talking to Render backend), cookies automatically adapt to `SameSite=None; Secure`.
+  - The database only saves a SHA-256 hash of the session token.
+  - API routes are strictly protected by role-checking middleware (`roles("doctor")`, `roles("pharmacy")`), ensuring unauthorized users cannot access staff data even if they try to tamper with frontend requests.
+
+### 2. Doctor Directory & Appointment Booking
+
+- **What It Does**: Patients can search specialists by department (e.g., Cardiology, Dermatology, Pediatrics, General Medicine), view consultation fees, and pick an available date and time slot. They can also request an **Instant Consultation** for immediate care.
+- **The Tech Behind It**:
+  - Doctor schedules are stored with discrete slot availability states in MongoDB.
+  - To prevent two patients from booking the same doctor slot at the same second, slot reservations use database-level transactional concurrency locks.
+  - As soon as a slot is booked, it instantly updates across the platform.
+
+### 3. In-Browser Telehealth Video Consultations
+
+- **What It Does**: Doctors and patients can conduct real-time video consultations directly inside the web browser. No apps to download, no plugins to install, and no meeting links to copy-paste.
+- **The Tech Behind It**:
+  - Integrates the official Jitsi Meet External IFrame API dynamically inside a React component modal.
+  - The backend generates cryptographically secure, unguessable room identifiers (e.g., `mb-xxxx-xxxx`) so only the matched doctor and patient can enter.
+  - A background server worker (`consultation-lifecycle.service.js`) monitors active video sessions and automatically marks the consultation completed after the session concludes.
+
+### 4. Digital Prescriptions & Printable Clinic Letterhead
+
+- **What It Does**: During or after a consultation, the doctor can write an official medical prescription detailing medicine names, dosages, timings (e.g., morning/night, before/after meals), and lifestyle instructions. Patients can view this anytime, upload outside prescriptions, or print an official clinic letterhead.
+- **The Tech Behind It**:
+  - The prescription modal formats the document according to official medical standards with the traditional Latin $℞$ symbol and doctor credentials.
+  - The frontend includes custom `@media print` CSS rules. When the patient clicks **Print Prescription**, the browser automatically hides the navigation bar, buttons, and app chrome, rendering a clean, professional paper letterhead ready for home printing or PDF export.
+
+### 5. Multi-Batch Pharmacy Inventory & Expiry Safeguards
+
+- **What It Does**: Medicines aren't just tracked as a simple stock number. The pharmacy organizes medicine stock into distinct **batches**, each with its own Lot Number, Stock Count, and Expiry Date. Expired medicines are automatically identified and blocked from being sold.
+- **The Tech Behind It**:
+  - **IST Expiry Calculation**: Expiry dates are calculated using Indian Standard Time (`UTC+05:30`), remaining valid until 23:59:59 IST on the listed date.
+  - **FIFO (First-In, First-Out) Allocation**: When a patient checks out, the backend automatically reserves stock from the batch with the nearest valid expiry date.
+  - **Automated Expiry Safeguards**:
+    1. Expired batches are automatically blocked from the catalog and cannot be added to the shopping cart.
+    2. Batches within 30 days of expiry display a prominent warning badge.
+    3. A **Fulfillment Lock** prevents pharmacists from packing or dispensing an order if a batch has expired between the time the patient placed the order and when the pharmacy processes it.
+
+### 6. Medicine Catalog & Smart Image Uploads
+
+- **What It Does**: Pharmacists can add new medicines to the platform and upload actual product photos. If a photo isn't uploaded, the platform automatically applies matching category artwork (like syrup bottles, ointment tubes, blister packs, or first-aid kits) so every medicine looks great.
+- **The Tech Behind It**:
+  - When uploading a product image, the frontend uses an HTML5 Canvas compression helper to resize and compress the image client-side before sending it to the backend. This saves bandwidth and makes uploads instant.
+  - If no custom image is chosen, the UI gracefully falls back to vector SVG packaging illustrations located in `frontend/public/assets/`.
+
+### 7. Shopping Cart & Razorpay Test Payments
+
+- **What It Does**: Patients can review their medicine cart, view price breakdowns (including tax and delivery charges), and pay online using Razorpay Test Mode with test UPI, credit/debit cards, or net banking.
+- **The Tech Behind It**:
+  - The backend creates Razorpay orders via server-to-server API calls in paise (₹1 = 100 paise).
+  - When payment finishes, Razorpay returns a cryptographic signature. The backend validates this using HMAC-SHA256 (`crypto.timingSafeEqual`) to prevent payment tampering:
+    $$\text{Signature} = \text{HMAC-SHA256}(\text{order\_id} + "|" + \text{payment\_id}, \text{SECRET})$$
+  - Features **idempotent reconciliation**: if a customer accidentally closes their browser before the payment confirmation finishes, clicking "Check payment status" on their order page triggers a direct server-to-server status check with Razorpay.
+
+### 8. Tripartite Medical History & Consultation Records
+
+- **What It Does**: Patients have a comprehensive history log where every past consultation is organized into three connected sections:
+  1. **Doctor's Clinical Notes**: Chief complaints, diagnosis, and advice.
+  2. **Official Prescription**: Medicines, dosage instructions, and print button.
+  3. **Linked Medicine Order**: Immediate view of medicines purchased for that consultation and their delivery status.
+- **The Tech Behind It**:
+  - MongoDB models link Appointments, Prescriptions, and Commerce Orders using relational ObjectId references.
+  - Clean, dedicated React card components present all three aspects without cluttering the screen.
 
 ---
 
 ## Installation and Setup
 
-From the repository root directory, install all dependencies for both workspaces:
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/SoumyadipM-SST/MERN_ETP-MediBridge.git
+cd MERN_ETP-MediBridge
+```
+
+### 2. Install Dependencies
+
+Install all dependencies for both the root, backend, and frontend with a single command:
 
 ```bash
 npm install
 ```
 
-_(Alternatively, use `npm ci` for clean, deterministic installs matching the lockfile)._
+### 3. Configure the Environment
+
+Create `backend/.env` from the provided example:
+
+```bash
+# Windows
+Copy-Item backend/.env.example backend/.env
+
+# macOS / Linux
+cp backend/.env.example backend/.env
+```
+
+Open `backend/.env` and enter your MongoDB connection string and Razorpay test credentials.
 
 ---
 
-## Database Seeding
+## Database Seeding & Demo Accounts
 
-The repository includes a database seed script (`backend/seed.js`) that safely provisions initial demonstration accounts, doctor profiles, consultation time slots, and multi-batch pharmaceutical products.
+MediBridge includes an automated database seed script (`backend/seed.js`) that provisions ready-to-test specialist doctor profiles, consultation appointment slots, and multi-batch pharmacy inventory.
 
-### Running the Seed Script
-
-Ensure your `MONGODB_URI` and `SEED_PASSWORD` are configured in `backend/.env`, then execute:
+### Run the Seeder
 
 ```bash
 npm run seed
@@ -203,25 +352,26 @@ npm run seed
 
 ### Seeded Demonstration Accounts
 
-The seed script creates three role-specific demo accounts using the `SEED_PASSWORD` configured in your `.env`:
+The script provisions three accounts using the `SEED_PASSWORD` set in your `backend/.env` (default: `DemoPassword2026!`):
 
-| Role           | Email Address              | Password                 | Initial Profile                      |
-| :------------- | :------------------------- | :----------------------- | :----------------------------------- |
-| **Patient**    | `patient@medibridge.demo`  | _(Your `SEED_PASSWORD`)_ | Aarav Sharma                         |
-| **Doctor**     | `doctor@medibridge.demo`   | _(Your `SEED_PASSWORD`)_ | Dr. Rajesh Verma (Internal Medicine) |
-| **Pharmacist** | `pharmacy@medibridge.demo` | _(Your `SEED_PASSWORD`)_ | MediBridge Central Pharmacy          |
+| Role           | Email Address              | Password                 | Profile Name            | Description                                                       |
+| :------------- | :------------------------- | :----------------------- | :---------------------- | :---------------------------------------------------------------- |
+| **Patient**    | `patient@medibridge.demo`  | _(Your `SEED_PASSWORD`)_ | **Aarav Sharma**        | Can book doctors, join video calls, and order medicines           |
+| **Doctor**     | `doctor@medibridge.demo`   | _(Your `SEED_PASSWORD`)_ | **Dr. Rajesh Verma**    | Specialist in Internal Medicine with clinical consultation portal |
+| **Pharmacist** | `pharmacy@medibridge.demo` | _(Your `SEED_PASSWORD`)_ | **MediBridge Pharmacy** | Manages batches, adds products, and fulfills customer orders      |
 
-_Note: The seed script is idempotent. Running it multiple times updates existing accounts and slots without duplicating records or destroying order history._
+> [!NOTE]
+> The seed script is completely safe to run multiple times. It updates existing demo accounts and slots without duplicating records or wiping your order history.
 
 ---
 
 ## Running the Application
 
-### Option A: Development Mode (Recommended)
+### Option A: Development Mode (Recommended for Testing)
 
-Run the backend and frontend in two separate terminal windows for live reloading:
+Run the backend and frontend in two separate terminal windows for live code reloading:
 
-**Terminal 1 — Backend API Server:**
+**Terminal 1 — Backend Server:**
 
 ```bash
 npm run dev:backend
@@ -237,179 +387,73 @@ npm run dev:frontend
 
 _Vite starts the React frontend on `http://127.0.0.1:5173`._
 
-Open your browser and navigate to: **`http://127.0.0.1:5173`**
+Open your web browser and visit: **`http://127.0.0.1:5173`**
 
 ---
 
 ### Option B: Production Build and Unified Server
 
-To test the compiled production bundle served directly by Express:
+To test the compiled production application served directly by Express:
 
-1. Build both workspaces:
+1. Build both the backend and frontend bundle:
    ```bash
    npm run build
    ```
-2. Start the unified server:
+2. Start the unified production server:
    ```bash
    npm start
    ```
-3. Open your browser at **`http://127.0.0.1:4000`**. The Express server will serve the static files from `frontend/dist/` alongside the `/api` endpoints.
-
----
-
-## Authentication and Role-Based Access
-
-MediBridge implements strict role-based authorization:
-
-### 1. Registration (`/signup`)
-
-- Public registration creates **Patients only**.
-- Any attempt to supply a custom role (such as `doctor`, `pharmacy`, or `admin`) via API injection is rejected by server-side Zod validation schemas.
-- Staff accounts (Doctors and Pharmacists) cannot register publicly and must be seeded or provisioned by administrators.
-
-### 2. Login (`/login`)
-
-- The login dialog includes a role selector tabs: **Patient**, **Doctor**, and **Pharmacist**.
-- Authentication requires both valid credentials and a role match. A patient's password submitted under the "Doctor" tab is rejected.
-
-### 3. Session Security
-
-- Sessions use a 32-byte cryptographically secure random token stored in an `HttpOnly`, `SameSite=Lax` cookie named `medibridge`.
-- The backend stores only a SHA-256 hash of the token in MongoDB, expiring after 7 days.
-- Role checks (`roles('patient')`, `roles('doctor')`, `roles('pharmacy')`) protect all sensitive API routes.
-
----
-
-## Pharmacy, Inventory Batches, and Expiry Safeguards
-
-MediBridge enforces strict pharmaceutical inventory integrity:
-
-### Multi-Batch Tracking
-
-- Medicines are tracked with discrete inventory batches rather than simple total stock numbers.
-- Each batch contains:
-  - `batchId`: A unique lot identifier.
-  - `label`: Lot/Batch number (e.g., `LOT-AD-2027`).
-  - `expiryDate`: ISO date string (`YYYY-MM-DD`).
-  - `stock`: Available unit quantity.
-
-### Expiry Date Rules & Timezone Handling
-
-- Expiry is calculated under **Indian Standard Time (IST, UTC+05:30)**.
-- A medicine remains valid through 23:59:59 IST on its printed expiry date and is marked **Expired** at midnight.
-- Batches expiring within 30 days are automatically tagged with an **Expiring Soon** warning badge.
-
-### Automated Safeguards
-
-1. **Catalog & Cart Restrictions**: Undated or expired batches cannot be added to the shopping cart.
-2. **FIFO Stock Allocation**: When a customer checks out, the backend automatically allocates inventory from the nearest valid expiry batch.
-3. **Fulfillment Gate**: Pharmacists cannot fulfill or ship an order if a batch has expired between order placement and fulfillment.
-4. **Optimistic Concurrency**: Stock adjustments and allocations increment a `stockVersion` counter within MongoDB transactions to prevent race conditions and overselling.
-
-### Product Image Management
-
-- Pharmacists can upload custom product photos when adding new medicines.
-- The frontend features live image preview with automatic client-side canvas compression.
-- If no custom image is provided, the platform automatically applies curated SVG category packaging artwork.
-
----
-
-## Razorpay Test-Mode Payment Workflow
-
-Medicine orders are processed using Razorpay in **Test Mode**:
-
-1. **Cart Preparation**: The patient adds in-date OTC or approved prescription medicines to the cart and navigates to Checkout.
-2. **Server Order Creation**: Clicking "Proceed to Payment" calls `POST /api/payments`, which validates cart stock availability and creates a Razorpay order in paise (`₹1.00 = 100 paise`).
-3. **Razorpay Modal**: The frontend launches the official Razorpay Checkout modal using `RAZORPAY_KEY_ID`.
-4. **Signature Verification**: Upon payment completion, Razorpay returns `razorpay_order_id`, `razorpay_payment_id`, and `razorpay_signature`. The backend validates the HMAC-SHA256 signature using `crypto.timingSafeEqual()`:
-   $$\text{HMAC-SHA256}(\text{order\_id} \mid \text{payment\_id}, \text{RAZORPAY\_KEY\_SECRET})$$
-5. **Idempotent Reconciliation**: If the browser is closed before the callback finishes, the patient can click **Check payment status** on their order page to trigger server-to-server reconciliation with Razorpay.
-6. **Automatic Test Refunds**: If a medicine becomes unavailable or expires during checkout, the backend initiates a test refund request and updates the payment status to `refund_pending`.
-
-> [!NOTE]
-> Test payments do not charge real money. Use standard Razorpay test cards or mock UPI IDs during checkout.
-
----
-
-## Telehealth Consultations and Jitsi Meet
-
-MediBridge integrates telehealth video consultations powered by the public Jitsi Meet infrastructure (`meet.jit.si`):
-
-### How Consultations Work
-
-1. **Booking**: The patient selects an available doctor, chooses a date/time slot, and submits an appointment request.
-2. **Instant Consultation (Demo)**: Patients can also select the "Instant Consultation" slot option. The request queues until the assigned doctor accepts it.
-3. **Consultation Workspace**: When the consultation window opens, both participants enter the consultation room.
-4. **Jitsi Video Call**: Clicking **Join video call** initializes the Jitsi Meet IFrame API with an encrypted, cryptographically random room name (`mb-...`).
-5. **Clinical Notes & Prescription Authoring**: During or after the call, the doctor records clinical consultation notes and writes digital prescriptions.
-
-### Telehealth Session Duration & Limitations
-
-- **Session Duration Limit**: For demonstration and resource efficiency, video calls have a **5-minute (300 seconds)** active duration limit enforced by the backend video lifecycle worker (`startVideoMaintenance()`).
-- **Graceful Teardown**: When the session deadline is reached, the backend automatically transitions the appointment to `completed` and the frontend gracefully unmounts the Jitsi iframe.
-- **Public Jitsi Service Constraints**:
-  - MediBridge uses the public `meet.jit.si` service without requiring paid server infrastructure.
-  - While MediBridge generates secure, unguessable room names and restricts room access in its own database, the public Jitsi service itself is externally hosted. Do not transmit real, sensitive personal health information during demonstrations.
-  - First-time room creators on `meet.jit.si` may see Jitsi's standard host login prompt depending on region.
-  - Camera and microphone access requires standard browser permissions.
+3. Open your browser at **`http://127.0.0.1:4000`**. The Express server will serve the optimized production files from `frontend/dist/` alongside the `/api` backend endpoints.
 
 ---
 
 ## Available npm Scripts
 
-All scripts can be run from the root directory:
+All scripts can be executed directly from the project root directory:
 
-| Command                | Action                                                                        |
-| :--------------------- | :---------------------------------------------------------------------------- |
-| `npm run dev:backend`  | Starts the Express backend in watch mode on port 4000                         |
-| `npm run dev:frontend` | Starts the Vite frontend development server on port 5173                      |
-| `npm run build`        | Builds both the backend syntax check and frontend production bundle           |
-| `npm start`            | Launches the production Express server serving `/api` and `frontend/dist/`    |
-| `npm run seed`         | Runs the database seed script to provision demo accounts and catalog items    |
-| `npm run lint`         | Runs ESLint across all JavaScript and JSX source files                        |
-| `npm run format`       | Automatically formats the entire codebase using Prettier                      |
-| `npm run format:check` | Verifies code formatting without writing changes                              |
-| `npm run check`        | Executes full verification: format check, lint, backend check, and Vite build |
+| Command                | Action                                                                               |
+| :--------------------- | :----------------------------------------------------------------------------------- |
+| `npm run dev:backend`  | Starts the Express backend server with auto-reload (`node --watch`) on port 4000     |
+| `npm run dev:frontend` | Starts the Vite React frontend development server on port 5173                       |
+| `npm run seed`         | Seeds MongoDB with demo users, doctors, and multi-batch pharmacy stock               |
+| `npm run build`        | Checks backend syntax and builds the frontend production bundle into `frontend/dist` |
+| `npm start`            | Runs the production backend server serving both API routes and static frontend files |
+| `npm run lint`         | Runs ESLint across all backend and frontend JavaScript/JSX source files              |
+| `npm run format`       | Automatically formats all files according to Prettier rules                          |
+| `npm run format:check` | Verifies code formatting compliance without modifying files                          |
+| `npm run check`        | Comprehensive pre-flight check: runs format check, linter, and full production build |
 
 ---
 
 ## Troubleshooting Common Issues
 
-### 1. MongoDB Connection Timeout or Bad Auth
+### 1. MongoDB Connection Error (`bad auth` or `MongoServerSelectionError`)
 
-- **Symptom**: `MongoServerSelectionError` or `MongoServerError: bad auth`.
-- **Solution**:
-  - Verify your Atlas connection string in `backend/.env`.
-  - Ensure special characters in your database user password are URL-encoded (e.g., `@` becomes `%40`).
-  - Check Atlas **Network Access** and ensure your current public IP address is allowed (or `0.0.0.0/0` for development).
+- **Fix**: Check your `MONGODB_URI` in `backend/.env`.
+- Ensure special characters in your database password are URL-encoded (for example, `@` becomes `%40`).
+- In your MongoDB Atlas dashboard, go to **Network Access** and ensure your IP address is whitelisted (or set to `0.0.0.0/0` for development).
 
-### 2. CORS / Cookie Session Errors
+### 2. Login Fails or Session Immediately Clears
 
-- **Symptom**: `Please sign in to continue` immediately after logging in, or CORS blocked errors.
-- **Solution**:
-  - Ensure you access the frontend via `http://127.0.0.1:5173` or `http://localhost:5173`.
-  - Check that `CLIENT_ORIGIN` in `backend/.env` matches the exact URL and port in your browser address bar.
+- **Fix**: Check `CLIENT_ORIGIN` in `backend/.env`. It must match the exact URL and port showing in your browser (e.g., `http://127.0.0.1:5173`).
+- If running on a cloud deployment (like Netlify + Render), make sure your backend has `NODE_ENV=production` set so the session cookie uses `SameSite=None; Secure`.
 
-### 3. Razorpay Orders Not Loading
+### 3. Razorpay Checkout Does Not Open
 
-- **Symptom**: `Razorpay test mode is not configured` (HTTP 503).
-- **Solution**:
-  - Check that `RAZORPAY_KEY_ID` in `backend/.env` starts with `rzp_test_`.
-  - Ensure both Key ID and Key Secret belong to the same active Test Mode key pair in your Razorpay dashboard.
+- **Fix**: Check that `RAZORPAY_KEY_ID` in `backend/.env` starts with `rzp_test_`.
+- Verify that both Key ID and Key Secret come from the same active Test Mode key pair in your Razorpay Dashboard.
 
-### 4. Video Camera / Microphone Not Connecting
+### 4. Video Call / Camera Access Blocked
 
-- **Symptom**: `gum.timeout` or black video screen in Jitsi.
-- **Solution**:
-  - Grant camera and microphone permissions to `127.0.0.1` in your browser settings.
-  - Ensure other applications (Zoom, Teams, etc.) are not locking your hardware camera.
-  - Test joining with separate browser profiles (or an Incognito window) when simulating both the Doctor and Patient simultaneously.
+- **Fix**: Ensure you have given your browser permission to access your webcam and microphone.
+- Make sure no other software (like Zoom, Google Meet, or Teams) is currently locking your hardware camera.
+- When simulating both the doctor and patient on the same machine, open one role in a normal window and the other in an **Incognito / Private window**.
 
 ---
 
-## Security and Compliance Notes
+## Security & Academic Notice
 
-- **Educational & Demonstration Notice**: MediBridge is developed as an academic and demonstration MERN stack application. It is not a licensed healthcare provider, medical device, or licensed pharmacy.
-- **Synthetic Data**: All doctor profiles, medical qualifications, medicine catalogs, and prescriptions in this project are synthetic demonstration data.
-- **Test Mode Only**: All financial transactions use Razorpay Test Mode; no real money is ever processed, collected, or refunded.
-- **Credential Protection**: Real database credentials, API keys, and session secrets must remain strictly confined to local `.env` files and never published to public repositories.
+- **Academic Project**: MediBridge is built as an educational, full-stack demonstration project. It is not an officially licensed medical device, clinical diagnostic tool, or commercial pharmacy.
+- **Synthetic Data**: All doctor names, credentials, medical notes, and medicine catalog items provided in the seed data are fictional.
+- **Payment Safety**: All financial transactions run through Razorpay **Test Mode**; no real money or bank accounts are ever charged.
+- **Credential Protection**: Real secrets, API keys, and database passwords should never be committed to public repositories. Always keep them confined to local `.env` files.
