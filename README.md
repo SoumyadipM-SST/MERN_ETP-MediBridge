@@ -1,4 +1,4 @@
-# MediBridge - Telimedicine & Pharmacy
+# MediBridge
 
 MediBridge is a full-stack MERN (MongoDB, Express, React, Node.js) healthcare platform engineered to connect patients, doctors, and pharmacies. The application features multi-role authentication, specialist appointment booking, browser-based telehealth consultations via Jitsi Meet, digital and scanned prescription workflows, multi-batch pharmacy inventory with expiry safeguards, and Razorpay test-mode payment processing.
 
