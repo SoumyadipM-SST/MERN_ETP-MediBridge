@@ -1,0 +1,6 @@
+node_modules
+frontend/dist
+.cache
+.data
+package-lock.json
+.vscode/settings.json
