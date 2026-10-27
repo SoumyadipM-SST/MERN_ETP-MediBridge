@@ -6,7 +6,7 @@ Instead of juggling different tools, patients can easily find doctors, book appo
 
 **Demo Video:** [Watch Demonstration on Google Drive](https://drive.google.com/drive/folders/1o4NAnWiAx5_VFwfowQMyq1CAp423WQTS?usp=drive_link)
 
-**Deployed Link:** [MediBrige deployed link](https://medibridge-portal.netlify.app)
+**Deployed Link:** [Open MediBrige Deployed Link](https://medibridge-portal.netlify.app)
 
 ---
 
