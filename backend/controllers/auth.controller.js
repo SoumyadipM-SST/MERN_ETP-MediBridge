@@ -15,7 +15,7 @@ export async function register(req, res) {
     passwordHash: await bcrypt.hash(body.password, 12),
     role: "patient",
   });
-  await loginSession(res, user);
+  await loginSession(res, user, req);
   send(res, publicUser(user), 201);
 }
 
@@ -34,7 +34,7 @@ export async function login(req, res) {
     401,
     "The email, password or selected login role is incorrect.",
   );
-  await loginSession(res, user);
+  await loginSession(res, user, req);
   send(res, publicUser(user));
 }
 
@@ -44,7 +44,7 @@ export async function me(req, res) {
 
 export async function logout(req, res) {
   await Session.deleteOne({ _id: req.authSession._id });
-  res.clearCookie("medibridge", { ...cookieOptions(), maxAge: undefined });
+  res.clearCookie("medibridge", { ...cookieOptions(req), maxAge: undefined });
   send(res, { loggedOut: true });
 }
 
