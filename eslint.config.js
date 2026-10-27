@@ -3,7 +3,7 @@ import react from "eslint-plugin-react";
 import hooks from "eslint-plugin-react-hooks";
 import importSort from "eslint-plugin-simple-import-sort";
 import globals from "globals";
-export default [
+export default 
   { ignores: ["**/node_modules/**", "**/dist/**", ".data/**", ".cache/**"] },
   js.configs.recommended,
   {
