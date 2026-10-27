@@ -1,0 +1,252 @@
+/* Telehealth Virtual Consultation Room */
+.consultation-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.consultation-title h1 {
+  font-size: clamp(26px, 3.5vw, 32px);
+  margin: 6px 0;
+}
+
+.consultation-title p {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.consultation-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.consultation-layout aside > .panel {
+  margin-bottom: 24px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.consultation-layout aside > .panel:first-child {
+  background: #f8fafc;
+  border-color: var(--rule);
+}
+
+/* Virtual Room Stage */
+.room-stage {
+  min-height: 350px;
+  padding: 34px;
+  color: #f8fafc;
+  background:
+    radial-gradient(
+      ellipse 90% 60% at 50% -20%,
+      rgba(13, 148, 136, 0.35) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 70% 50% at 80% 100%,
+      rgba(37, 99, 235, 0.2) 0%,
+      transparent 60%
+    ),
+    linear-gradient(145deg, #090e1a 0%, #1e293b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 4px solid var(--green);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 25px 60px -12px rgba(15, 23, 42, 0.5);
+}
+
+.room-stage-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.room-stage-top > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2dd4bf;
+}
+
+.room-participants {
+  padding: 36px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+}
+
+.room-person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.room-person .avatar {
+  width: 80px;
+  height: 80px;
+  font-size: 32px;
+  border: 2.5px solid rgba(45, 212, 191, 0.5);
+  box-shadow: 0 0 28px rgba(45, 212, 191, 0.35);
+  animation: avatarGlow 3s infinite alternate ease-in-out;
+}
+
+@keyframes avatarGlow {
+  from {
+    box-shadow: 0 0 20px rgba(45, 212, 191, 0.25);
+  }
+  to {
+    box-shadow: 0 0 32px rgba(45, 212, 191, 0.45);
+  }
+}
+
+.room-person strong {
+  font-size: 13.5px;
+  color: #f8fafc;
+  margin-top: 6px;
+}
+
+.room-person > span:last-child {
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+.room-bridge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2dd4bf;
+}
+
+.room-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 480px;
+  margin: 0 auto;
+  color: #cbd5e1;
+  font-size: 13.5px;
+}
+
+.room-controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.room-complete {
+  background: transparent;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.room-complete:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
+
+.room-window {
+  text-align: center;
+  margin: 20px 0 0;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Chat Panel */
+.chat-panel {
+  margin-top: 24px;
+}
+
+.messages {
+  max-height: 380px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 0;
+}
+
+.message {
+  padding: 13px 18px;
+  max-width: 85%;
+  align-self: flex-start;
+  min-width: 45%;
+  background: #f1f5f9;
+  border-radius: 18px 18px 18px 4px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.message.own {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+  border: 1px solid #99f6e4;
+  border-radius: 18px 18px 4px 18px;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.1);
+}
+
+.message > span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.message p {
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.chat-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.chat-form input {
+  flex: 1;
+}
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .consultation-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .consultation-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .room-stage {
+    padding: 22px;
+  }
+  .room-participants {
+    gap: 20px;
+    padding: 24px 0;
+  }
+  .room-person .avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+}

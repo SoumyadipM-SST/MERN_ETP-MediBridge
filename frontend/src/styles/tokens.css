@@ -1,0 +1,257 @@
+@theme {
+  --color-ivory: #f8fafc;
+  --color-ink: #0f172a;
+  --color-botanical: #0d9488;
+  --color-mineral: #e2e8f0;
+  --color-accent: #2563eb;
+  --font-sans:
+    "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --font-display: "Outfit", "Plus Jakarta Sans", sans-serif;
+}
+
+:root {
+  --white: #ffffff;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Typography */
+  --font-sans:
+    "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  --font-display:
+    "Outfit", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Semantic Theme Colors */
+  --paper: #f8fafc;
+  --paper-card: #ffffff;
+  --ink: #0f172a;
+  --ink-secondary: #334155;
+  --muted: #64748b;
+  --muted-light: #94a3b8;
+  --rule: #e2e8f0;
+  --rule-light: #f1f5f9;
+
+  /* Primary Brand (Clinical Emerald Teal) */
+  --green: #0d9488;
+  --green-hover: #0f766e;
+  --green-active: #115e59;
+  --green-light: #ccfbf1;
+  --teal-soft: #f0fdfa;
+  --turquoise: #0d9488;
+  --sage: #e6f6f4;
+
+  /* Secondary Accent (Vibrant Trust Blue) */
+  --blue: #2563eb;
+  --blue-hover: #1d4ed8;
+  --blue-active: #1e40af;
+  --blue-light: #dbeafe;
+  --blue-soft: #eff6ff;
+  --accent: #2563eb;
+
+  /* Status Colors */
+  --coral: #e11d48;
+  --coral-soft: #ffe4e6;
+  --coral-border: #fecdd3;
+  --amber: #d97706;
+  --amber-soft: #fef3c7;
+  --amber-border: #fde68a;
+  --purple: #7c3aed;
+  --purple-soft: #f5f3ff;
+  --purple-border: #ddd6fe;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  /* Refined Elevation Shadows */
+  --shadow-small:
+    0 1px 3px 0 rgb(15 23 42 / 0.04), 0 1px 2px -1px rgb(15 23 42 / 0.04);
+  --shadow-sm:
+    0 2px 8px -1px rgb(15 23 42 / 0.06), 0 1px 4px -1px rgb(15 23 42 / 0.04);
+  --shadow:
+    0 12px 28px -4px rgb(15 23 42 / 0.07), 0 4px 12px -2px rgb(15 23 42 / 0.03);
+  --shadow-lg:
+    0 24px 48px -8px rgb(15 23 42 / 0.1), 0 8px 20px -4px rgb(15 23 42 / 0.05);
+  --shadow-card:
+    0 0 0 1px rgba(226, 232, 240, 0.8), 0 2px 4px rgba(15, 23, 42, 0.03),
+    0 12px 24px -4px rgba(15, 23, 42, 0.06);
+  --shadow-card-hover:
+    0 0 0 1px rgba(13, 148, 136, 0.25), 0 8px 16px -2px rgba(13, 148, 136, 0.08),
+    0 20px 36px -4px rgba(15, 23, 42, 0.1);
+  --shadow-glow: 0 0 28px -2px rgba(13, 148, 136, 0.28);
+  --shadow-glow-blue: 0 0 28px -2px rgba(37, 99, 235, 0.28);
+  --surface-tint: #ffffff;
+
+  /* Gradients */
+  --gradient-teal: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  --gradient-teal-hover: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+  --gradient-blue: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --gradient-brand-text: linear-gradient(135deg, #0d9488 20%, #2563eb 100%);
+  --gradient-subtle-glow: radial-gradient(
+    circle at 50% 0%,
+    rgba(13, 148, 136, 0.12) 0%,
+    transparent 75%
+  );
+  --gradient-mesh-card: linear-gradient(
+    135deg,
+    rgba(240, 253, 250, 0.85) 0%,
+    rgba(255, 255, 255, 0.95) 45%,
+    rgba(239, 246, 255, 0.85) 100%
+  );
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(
+      ellipse 65% 45% at 85% -5%,
+      rgba(37, 99, 235, 0.075) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 55% 40% at 5% 15%,
+      rgba(13, 148, 136, 0.07) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 70% 50% at 50% 100%,
+      rgba(15, 23, 42, 0.02) 0%,
+      transparent 60%
+    ),
+    var(--paper);
+  background-attachment: fixed;
+  color: var(--ink);
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom Modern Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+  background-clip: padding-box;
+}
+
+input,
+textarea,
+select {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rule);
+  background-color: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: #cbd5e1;
+}
+
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+select:focus,
+select:focus-visible {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.18);
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+table {
+  font-size: 13px;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th {
+  background: #f8fafc;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--rule);
+}
+
+td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--rule-light);
+  color: var(--ink);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.small-text {
+  font-size: 13px;
+}
+
+.footnote {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.input-icon svg {
+  color: var(--muted);
+}
+
+.preserve-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,1081 @@
+/* Records, Medical History & Pharmacy Inventory */
+.content-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.content-heading h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.content-heading h3 {
+  margin: 0;
+}
+
+.content-heading select {
+  width: auto;
+  min-width: 160px;
+  max-width: 240px;
+  font-size: 13px;
+}
+
+.content-heading p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0;
+}
+
+.dashboard-columns {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 28px;
+  margin: 32px 0;
+  align-items: start;
+}
+
+.compact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid var(--rule-light);
+  font-size: 13.5px;
+  padding: 16px 0;
+  transition: background-color var(--transition-fast);
+}
+
+.compact-row:hover {
+  background-color: #f8fafc;
+}
+
+.compact-row p {
+  margin: 2px 0;
+}
+
+/* Medical Records List */
+.record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.record {
+  padding: 24px 28px;
+  background: #ffffff;
+  border: 1px solid var(--rule);
+  min-width: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-small);
+  border-left: 4px solid var(--blue);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.record:hover {
+  box-shadow: var(--shadow);
+}
+
+.record-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.record-header h3 {
+  margin: 6px 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.record-header h3 .muted {
+  font-size: 13.5px;
+  font-weight: 400;
+  font-family: var(--font-sans);
+}
+
+.record-header p {
+  color: var(--muted);
+  margin: 6px 0;
+  font-size: 13.5px;
+}
+
+.record-header > .badge {
+  margin-top: 4px;
+}
+
+.record-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.record > .record-actions {
+  border-top: 1px solid var(--rule-light);
+  padding-top: 20px;
+}
+
+/* Document Upload Form */
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1.5px dashed #93c5fd;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #f0fdfa, #eff6ff);
+  border-radius: var(--radius-lg);
+}
+
+.upload-form-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.upload-form-info .upload-icon {
+  color: var(--blue);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.upload-form-info div {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.upload-form strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.upload-form p {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 4px 0 0;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+}
+
+.upload-form-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.upload-form input[type="file"] {
+  flex: 1 1 180px;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  min-height: 42px;
+  font-size: 13px;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-form input[type="file"]::file-selector-button,
+.upload-form input[type="file"]::-webkit-file-upload-button {
+  padding: 5px 12px;
+  margin-right: 10px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: #f1f5f9;
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.upload-form input[type="file"]:hover::file-selector-button {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.upload-form button {
+  flex-shrink: 0;
+}
+
+/* Orders and Summaries */
+.order-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  gap: 24px;
+  padding: 0;
+}
+
+.order-summary > div {
+  flex: 1;
+}
+
+.order-summary h3 {
+  margin: 4px 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.order-summary p {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 4px 0;
+}
+
+.order-detail {
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+
+/* History Timeline */
+.timeline {
+  list-style: none;
+  padding: 0 0 0 20px;
+  margin: 24px 0;
+  border-left: 2px solid #e2e8f0;
+}
+
+.timeline li {
+  position: relative;
+  margin-bottom: 24px;
+  font-size: 13.5px;
+}
+
+.timeline li:before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.25);
+}
+
+.timeline strong {
+  text-transform: capitalize;
+  display: block;
+  font-size: 14px;
+}
+
+.timeline time {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.timeline p {
+  font-size: 12.5px;
+  margin: 4px 0;
+  color: var(--ink-secondary);
+}
+
+/* Review Forms */
+.review-form {
+  padding: 24px;
+  margin: 20px 0;
+  background: #f8fafc;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.review-form > p {
+  font-size: 13px;
+}
+
+.inventory-search {
+  max-width: 480px;
+  margin-bottom: 24px;
+}
+
+/* Data Table Wrapper */
+.table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-small);
+}
+
+.table-sub {
+  display: block;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  white-space: normal;
+  min-width: 145px;
+  gap: 8px 12px;
+}
+
+.table-actions button {
+  font-size: 13px;
+  min-height: 34px;
+}
+
+.rx-line {
+  border-bottom: 1px solid var(--rule-light);
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+}
+
+.rx-line .field {
+  margin-bottom: 12px;
+}
+
+.rx-mark {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #b45309;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  z-index: 2;
+}
+
+/* Batch Editor Accordions */
+.batch-editor {
+  display: grid;
+  gap: 12px;
+}
+
+.batch-editor details {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 16px;
+  background: #f8fafc;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.batch-editor details[open] {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-small);
+}
+
+.batch-editor summary {
+  cursor: pointer;
+  line-height: 1.6;
+  font-weight: 600;
+  color: var(--ink);
+  user-select: none;
+}
+
+.batch-editor summary > span {
+  margin-left: 10px;
+}
+
+.batch-editor form {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-light);
+}
+
+.subheading {
+  margin: 24px 0 14px;
+}
+
+summary:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+}
+
+/* Responsive Records Styles */
+@media (max-width: 900px) {
+  .dashboard-columns {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (min-width: 820px) {
+  .history-records .upload-form {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 24px;
+  }
+
+  .history-records .upload-form-info {
+    flex: 1 1 auto;
+  }
+
+  .history-records .upload-form-controls {
+    flex: 0 1 auto;
+    width: auto;
+  }
+
+  .history-records .upload-form input[type="file"] {
+    width: 250px;
+    flex: 0 1 250px;
+  }
+}
+
+/* Medical History Card Details & Subcards */
+.history-details-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-light);
+}
+
+.history-subcard {
+  background: #f8fafc;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-sizing: border-box;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.history-subcard:hover {
+  background: #ffffff;
+  box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.05);
+}
+
+.history-subcard.notes-card {
+  border-left: 4px solid var(--blue);
+}
+
+.history-subcard.prescription-card-wrap {
+  border-left: 4px solid var(--green);
+}
+
+.history-subcard.orders-card {
+  border-left: 4px solid #818cf8;
+}
+
+.history-subcard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.subcard-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+.subcard-icon.text-blue {
+  color: var(--blue);
+}
+
+.subcard-icon.text-teal {
+  color: var(--green);
+}
+
+.subcard-icon.text-indigo {
+  color: #6366f1;
+}
+
+/* Status Pills for Sections */
+.status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  line-height: 1.2;
+}
+
+.status-pill.green {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.status-pill.teal {
+  background: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+}
+
+.status-pill.purple {
+  background: #eef2ff;
+  color: #4338ca;
+  border: 1px solid #c7d2fe;
+}
+
+.status-pill.neutral {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+/* Clinical Memo Box & Empty State Pill */
+.clinical-memo-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.clinical-memo-box p {
+  margin: 0;
+}
+
+.clinical-empty-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Prescription Card Enhancements */
+.prescription-record {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow:
+    0 1px 3px rgba(15, 23, 42, 0.04),
+    0 4px 12px -2px rgba(15, 23, 42, 0.03);
+}
+
+.prescription-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.prescription-title-group h4 {
+  font-size: 15px;
+  margin: 0 0 3px;
+  color: var(--ink);
+}
+
+.prescription-meta-line {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.prescription-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.rx-section-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.prescription-item-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.item-main-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.item-name {
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+.item-qty-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.item-instructions-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--ink-secondary);
+  margin-top: 4px;
+}
+
+.item-instructions-row .instruction-icon {
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.prescription-advice-box {
+  background: #f0fdfa;
+  border: 1px solid #ccfbf1;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin: 14px 0;
+}
+
+.prescription-advice-box .advice-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green-hover);
+  font-size: 12.5px;
+  margin-bottom: 4px;
+}
+
+.prescription-advice-box p {
+  font-size: 13px;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Related Orders List */
+.linked-orders-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.order-entry-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.order-entry-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.order-entry-info strong {
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.order-entry-items {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.order-entry-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Print Modal & Printable Prescription Document */
+.print-modal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.print-dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.printable-prescription-document {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 32px 36px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+  font-family: var(--font-sans);
+  box-sizing: border-box;
+}
+
+.rx-doc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.rx-doc-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rx-doc-symbol {
+  font-family: serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: #0d9488;
+  line-height: 1;
+}
+
+.rx-doc-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rx-doc-subtitle {
+  font-size: 11px;
+  color: #64748b;
+  margin: 3px 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rx-doc-meta {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rx-doc-num {
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  display: block;
+}
+
+.rx-doc-date {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.rx-doc-divider {
+  height: 1.5px;
+  background: #e2e8f0;
+  margin: 16px 0;
+}
+
+.rx-doc-parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.rx-doc-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0d9488;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.rx-doc-doctor h3,
+.rx-doc-patient h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 2px;
+  color: #0f172a;
+}
+
+.rx-doc-qual {
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+  margin: 0 0 2px;
+}
+
+.rx-doc-spec,
+.rx-doc-clinic,
+.rx-doc-validity,
+.rx-doc-reason {
+  font-size: 12px;
+  color: #64748b;
+  margin: 2px 0;
+}
+
+.rx-doc-block {
+  margin: 18px 0;
+}
+
+.rx-doc-block-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.rx-latin-symbol {
+  font-family: serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0d9488;
+}
+
+.rx-doc-heading {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+}
+
+.rx-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-top: 6px;
+}
+
+.rx-doc-table th {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 11.5px;
+}
+
+.rx-doc-table td {
+  border: 1px solid #e2e8f0;
+  padding: 8px 10px;
+  color: #1e293b;
+}
+
+.rx-doc-qty {
+  font-weight: 700;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.rx-doc-instruction {
+  color: #334155;
+  font-size: 12px;
+}
+
+.rx-doc-notes-body,
+.rx-doc-advice-body {
+  background: #fafbfc;
+  border-left: 3.5px solid #0d9488;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #1e293b;
+}
+
+.rx-doc-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-top: 20px;
+  padding-top: 14px;
+}
+
+.rx-doc-legal {
+  flex: 1;
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.rx-doc-signature {
+  text-align: right;
+  min-width: 180px;
+}
+
+.rx-sig-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #0d9488;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.rx-doc-signature strong {
+  display: block;
+  font-size: 13.5px;
+  color: #0f172a;
+  margin-top: 4px;
+}
+
+.rx-doc-signature small {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.rx-sig-date {
+  font-size: 10.5px;
+  color: #94a3b8;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Print Output Media Queries */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .printable-prescription-document,
+  .printable-prescription-document * {
+    visibility: visible !important;
+  }
+
+  .printable-prescription-document {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 24px !important;
+    border: 1px solid #475569 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  .no-print,
+  .modal-heading,
+  .print-dialog-actions,
+  button,
+  .btn,
+  header,
+  footer,
+  nav {
+    display: none !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .record {
+    padding: 20px;
+  }
+  .upload-form {
+    padding: 16px;
+    gap: 14px;
+  }
+  .upload-form-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .upload-form input[type="file"] {
+    width: 100%;
+  }
+  .upload-form button {
+    width: 100%;
+  }
+  .rx-doc-parties {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .rx-doc-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .rx-doc-meta {
+    text-align: left;
+  }
+  .rx-doc-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .rx-doc-signature {
+    text-align: left;
+  }
+}

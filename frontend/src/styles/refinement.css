@@ -1,0 +1,131 @@
+/* Final Polish, Micro-Animations & Refinements */
+
+::selection {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+/* Page Entrance Animation */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section {
+  animation: pageFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2.5px;
+}
+
+/* Glassmorphism & Elevation Details */
+.panel,
+.record,
+.doctor-card,
+.product-card,
+.doctor-profile,
+.product-detail,
+.cart-item,
+.filters,
+.doctor-filters,
+.table-wrap,
+.auth-panel {
+  border-radius: var(--radius-xl);
+  border-color: rgba(226, 232, 240, 0.85);
+}
+
+.panel:hover,
+.record:hover {
+  border-color: #cbd5e1;
+}
+
+/* Typography Optics */
+.content-heading h2,
+.page-title h1,
+.doctor-profile h1,
+.product-detail h1 {
+  letter-spacing: -0.025em;
+}
+
+/* Table Enhancements */
+tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Pulse Beacons */
+.live-dot {
+  position: relative;
+}
+
+/* Batch Editor Accordions */
+.batch-editor details {
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.batch-editor details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.batch-editor details summary::-webkit-details-marker {
+  display: none;
+}
+
+.batch-editor details summary:after {
+  content: "▾";
+  font-size: 16px;
+  color: var(--muted);
+  transition: transform var(--transition-fast);
+}
+
+.batch-editor details[open] summary:after {
+  transform: rotate(180deg);
+  color: var(--green);
+}
+
+/* Interactive Card Elevations */
+.doctor-card:hover,
+.product-card:hover {
+  border-color: #93c5fd;
+}
+
+/* Video Stage Lighting */
+.video-panel iframe {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  min-height: 380px;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: #0f172a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile Polish */
+@media (max-width: 680px) {
+  .section {
+    padding-top: 28px;
+    padding-bottom: 44px;
+  }
+
+  .video-panel iframe {
+    min-height: 280px;
+  }
+}

@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./base.css";
+@import "./components.css";
+@import "./layout.css";
+@import "./dashboard.css";
+@import "./commerce.css";
+@import "./doctors.css";
+@import "./records.css";
+@import "./consultation.css";
+@import "./account.css";
+@import "./refinement.css";
