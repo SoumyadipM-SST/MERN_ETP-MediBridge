@@ -4,7 +4,7 @@ MediBridge is a modern healthcare web platform designed to bring **Patients**, *
 
 Instead of juggling different tools, patients can easily find doctors, book appointments, join private in-browser video calls, receive digital prescriptions, and order their prescribed medicines online. Doctors get a dedicated clinical dashboard to conduct consultations and issue official printable prescriptions, while pharmacies manage multi-batch medicine stocks with built-in safeguards that automatically block expired medicines from ever reaching patients.
 
-**Demo Video:** [Watch Demonstration on Google Drive](https://drive.google.com/drive/folders/1o4NAnWiAx5_VFwfowQMyq1CAp423WQTS?usp=drive_link)
+**Demo Video:** [Watch Demonstration on Google Drive](https://drive.google.com/file/d/1X-CZYuxnEFj0gEIs6BCGb1Gn58WXdTDF/view?usp=drive_link)
 
 **Deployed Link:** [Open MediBrige Deployed Link](https://medibridge-portal.netlify.app)
 
