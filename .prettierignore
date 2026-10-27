@@ -3,4 +3,4 @@ frontend/dist
 .cache
 .data
 package-lock.json
-.vscode/settings.json
+.vscode/settings
