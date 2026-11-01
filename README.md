@@ -1,4 +1,4 @@
-# MediBridge — Full-Stack Healthcare Platform
+# MediBridge - Telemedicine & Pharmacy
 
 MediBridge is a modern healthcare web platform designed to bring **Patients**, **Doctors**, and **Pharmacies** together into one seamless digital care journey.
 
@@ -6,7 +6,7 @@ Instead of juggling different tools, patients can easily find doctors, book appo
 
 **Demo Video:** [Watch Demonstration on Google Drive](https://drive.google.com/file/d/1X-CZYuxnEFj0gEIs6BCGb1Gn58WXdTDF/view?usp=drive_link)
 
-**Deployed Link:** [Open MediBrige Deployed Link](https://medibridge-portal.netlify.app)
+**MediBridge:** [Open Deployed Link](https://medibridge-portal.netlify.app)
 
 ---
 
